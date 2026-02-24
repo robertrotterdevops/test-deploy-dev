@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: Azure-02-production
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: Azure-02
+    app.kubernetes.io/component: production
+    environment: production
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: Azure-02
+  
+  source:
+    repoURL: "https://github.com/org/Azure-02.git"
+    targetRevision: main
+    path: overlays/production
+  
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: Azure-02-production
+  
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+    # Production: Manual sync required
+    # automated: {}

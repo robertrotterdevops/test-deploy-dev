@@ -1,0 +1,125 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: Azure-02
+  namespace: Azure-02
+  labels:
+    app.kubernetes.io/name: Azure-02
+    app.kubernetes.io/component: elasticsearch
+spec:
+  version: 8.17.0
+  
+  # HTTP configuration
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: false
+  
+  # Node sets
+  nodeSets:
+    # Master nodes (dedicated)
+    - name: master
+      count: 3
+      config:
+        node.roles: ["master"]
+        # Disable machine learning on master nodes
+        xpack.ml.enabled: false
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 2Gi
+                  cpu: "1"
+                limits:
+                  memory: 2Gi
+                  cpu: "2000m"
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+
+    # Hot tier - data nodes (ingest, recent data)
+    - name: hot
+      count: 3
+      config:
+        node.roles: ["data_hot", "data_content", "ingest", "transform"]
+        # Hot tier node attributes
+        node.attr.data: hot
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 8Gi
+                  cpu: "2"
+                limits:
+                  memory: 8Gi
+                  cpu: "4"
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        elasticsearch.k8s.elastic.co/cluster-name: Azure-02
+                        elasticsearch.k8s.elastic.co/node-data: "true"
+                    topologyKey: topology.kubernetes.io/zone
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 100Gi
+            storageClassName: premium
+
+    # Frozen tier - searchable snapshots, minimal local cache
+    - name: frozen
+      count: 1
+      config:
+        node.roles: ["data_frozen"]
+        # Frozen tier node attributes
+        node.attr.data: frozen
+        # Searchable snapshots cache
+        xpack.searchable.snapshot.shared_cache.size: 90%
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: 32Gi
+                  cpu: "8"
+                limits:
+                  memory: 32Gi
+                  cpu: "16"
+          initContainers:
+            - name: sysctl
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 2400Gi
+            storageClassName: standard

@@ -1,0 +1,35 @@
+apiVersion: agent.k8s.elastic.co/v1alpha1
+kind: Agent
+metadata:
+  name: Azure-02-agent
+  namespace: Azure-02
+  labels:
+    app.kubernetes.io/name: Azure-02
+    app.kubernetes.io/component: elastic-agent
+spec:
+  version: 8.17.0
+  
+  # Fleet mode - enrolls with Fleet Server
+  mode: fleet
+  
+  # Reference to Fleet Server
+  fleetServerRef:
+    name: Azure-02-fleet-server
+  
+  # DaemonSet for node-level collection
+  daemonSet:
+    podTemplate:
+      spec:
+        serviceAccountName: elastic-agent
+        automountServiceAccountToken: true
+        securityContext:
+          runAsUser: 0
+        containers:
+          - name: agent
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "200m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"

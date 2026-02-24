@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: Azure-03-production
+  labels:
+    app.kubernetes.io/name: Azure-03
+    environment: production

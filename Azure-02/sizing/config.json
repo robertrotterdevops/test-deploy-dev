@@ -1,0 +1,32 @@
+{
+  "project": "Azure-02",
+  "profile": "custom",
+  "source": "sizing_report",
+  "health_score": 0,
+  "platform": "aks",
+  "inputs": {},
+  "tiers": {
+    "hot": {},
+    "cold": {},
+    "frozen": {
+      "snapshot_storage_gb": 76500.0
+    }
+  },
+  "kibana": {},
+  "fleet_server": {},
+  "summary": {
+    "Overall OK": "False",
+    "Total nodes": "16",
+    "Total vCPU (selected)": "86.0",
+    "Total RAM GB (selected)": "300.0",
+    "Total local disk GB (selected)": "19800.0",
+    "Total snapshot storage GB": "76500.0"
+  },
+  "generated_by": "project-initializer/sizing_integration",
+  "notes": [
+    "Configuration derived from sizing report",
+    "Use 'devops-02-2026' skill for re-sizing or adjustments",
+    "Memory: Allocate 50% of node memory to JVM heap (max 31GB)",
+    "Storage: Values include replicas and overhead calculations"
+  ]
+}

@@ -1,0 +1,42 @@
+# Azure-02 - Example Variables
+# Copy this file to terraform.tfvars and customize values
+# Values from sizing report
+
+project_name = "Azure-02"
+environment  = "dev"
+location     = "westeurope"
+
+# Networking
+vnet_address_space = ["10.0.0.0/16"]
+aks_subnet_prefix  = "10.0.0.0/20"
+
+# Kubernetes
+kubernetes_version = "1.30"
+system_node_count  = 3
+system_vm_size     = "Standard_D16s_v5"
+
+# ES Hot tier (memory-optimized for active data)
+es_hot_node_count   = 3
+es_hot_vm_size      = "Standard_E16s_v5"
+es_hot_disk_size_gb = 1000
+
+# ES Cold tier (storage-optimized for older data)
+es_cold_enabled      = true
+es_cold_node_count   = 3
+es_cold_vm_size      = "Standard_D16s_v5"
+es_cold_disk_size_gb = 2000
+
+# ES Frozen tier (for searchable snapshots)
+es_frozen_enabled      = true
+es_frozen_node_count   = 3
+es_frozen_vm_size      = "Standard_F32s_v2"
+es_frozen_disk_size_gb = 128
+
+# ACR
+acr_sku = "Standard"
+
+# Monitoring
+log_retention_days = 30
+
+# Storage (for ES snapshots)
+snapshot_storage_gb = 76500

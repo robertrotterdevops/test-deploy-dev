@@ -1,0 +1,31 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: Azure-02
+  namespace: Azure-02
+  labels:
+    app.kubernetes.io/name: Azure-02
+    app.kubernetes.io/component: kibana
+spec:
+  version: 8.17.0
+  count: 1
+  
+  elasticsearchRef:
+    name: Azure-02
+  
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: false
+  
+  podTemplate:
+    spec:
+      containers:
+        - name: kibana
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "2Gi"
+              cpu: "2"
