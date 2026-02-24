@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: Azure-02
-  labels:
-    app.kubernetes.io/name: Azure-02
-    app.kubernetes.io/component: elasticsearch
-    app.kubernetes.io/managed-by: eck
