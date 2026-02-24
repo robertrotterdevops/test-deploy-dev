@@ -1,0 +1,39 @@
+apiVersion: agent.k8s.elastic.co/v1alpha1
+kind: Agent
+metadata:
+  name: Azure-02-fleet-server
+  namespace: Azure-02
+  labels:
+    app.kubernetes.io/name: Azure-02
+    app.kubernetes.io/component: fleet-server
+spec:
+  version: 8.17.0
+  
+  # Fleet Server mode
+  mode: fleet
+  fleetServerEnabled: true
+  
+  # Reference to Elasticsearch
+  elasticsearchRefs:
+    - name: Azure-02
+  
+  # Reference to Kibana for Fleet setup
+  kibanaRef:
+    name: Azure-02
+  
+  # Deployment for Fleet Server
+  deployment:
+    replicas: 1
+    podTemplate:
+      spec:
+        serviceAccountName: elastic-agent
+        automountServiceAccountToken: true
+        containers:
+          - name: agent
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "1Gi"
+                cpu: "1"

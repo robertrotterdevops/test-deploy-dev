@@ -1,0 +1,16 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: Azure-02
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/your-org/Azure-02
+  ref:
+    branch: main
+  ignore: |
+    # Exclude files from synchronization
+    /*.md
+    /docs
+    /scripts
+    /overlays

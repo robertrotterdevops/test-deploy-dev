@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: Azure-02-mgmt
+  labels:
+    project: Azure-02
+    environment: management
