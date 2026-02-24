@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: AKS-04
-  labels:
-    app.kubernetes.io/name: AKS-04
-    app.kubernetes.io/component: elasticsearch
-    app.kubernetes.io/managed-by: eck

@@ -1,7 +1,0 @@
-# Fallback ECK operator manifest
-# Source: https://download.elastic.co/downloads/eck/2.16.0/operator.yaml
-# This file is intentionally minimal when sizing export did not include embedded operator YAML.
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: elastic-system

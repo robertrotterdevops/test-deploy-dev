@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: AKS-04
-  labels:
-    project: AKS-04
