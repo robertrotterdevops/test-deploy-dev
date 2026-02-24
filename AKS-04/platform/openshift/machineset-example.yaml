@@ -1,0 +1,135 @@
+# OpenShift MachineSets derived from sizing export
+---
+# Replace providerSpec details (AMI/subnet/security groups/credentials) for your cloud.
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: AKS-04-hot
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: <cluster-id>
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: <cluster-id>
+      machine.openshift.io/cluster-api-machineset: AKS-04-hot
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: <cluster-id>
+        machine.openshift.io/cluster-api-machineset: AKS-04-hot
+        machine.openshift.io/cluster-api-machine-role: elasticsearch
+        machine.openshift.io/cluster-api-machine-type: elasticsearch
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/elasticsearch: ""
+          AKS-04-pool: "hot"
+      taints:
+        - key: elasticsearch
+          value: "true"
+          effect: NoSchedule
+      providerSpec:
+        value:
+          # Example provider values only. Match to your cloud and worker flavor from sizing.
+          # Target flavor for this pool: 16.0 vCPU / 64.0 GiB
+          apiVersion: awsproviderconfig.openshift.io/v1beta1
+          kind: AWSMachineProviderConfig
+          instanceType: <set-instance-type>
+          blockDevices:
+            - ebs:
+                volumeSize: 500
+                volumeType: gp3
+                iops: 3000
+                throughput: 125
+
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: AKS-04-cold
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: <cluster-id>
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: <cluster-id>
+      machine.openshift.io/cluster-api-machineset: AKS-04-cold
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: <cluster-id>
+        machine.openshift.io/cluster-api-machineset: AKS-04-cold
+        machine.openshift.io/cluster-api-machine-role: elasticsearch
+        machine.openshift.io/cluster-api-machine-type: elasticsearch
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/elasticsearch: ""
+          AKS-04-pool: "cold"
+      taints:
+        - key: elasticsearch
+          value: "true"
+          effect: NoSchedule
+      providerSpec:
+        value:
+          # Example provider values only. Match to your cloud and worker flavor from sizing.
+          # Target flavor for this pool: 16.0 vCPU / 64.0 GiB
+          apiVersion: awsproviderconfig.openshift.io/v1beta1
+          kind: AWSMachineProviderConfig
+          instanceType: <set-instance-type>
+          blockDevices:
+            - ebs:
+                volumeSize: 500
+                volumeType: gp3
+                iops: 3000
+                throughput: 125
+
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: AKS-04-system
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: <cluster-id>
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: <cluster-id>
+      machine.openshift.io/cluster-api-machineset: AKS-04-system
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: <cluster-id>
+        machine.openshift.io/cluster-api-machineset: AKS-04-system
+        machine.openshift.io/cluster-api-machine-role: elasticsearch
+        machine.openshift.io/cluster-api-machine-type: elasticsearch
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/elasticsearch: ""
+          AKS-04-pool: "system"
+      taints:
+        - key: elasticsearch
+          value: "true"
+          effect: NoSchedule
+      providerSpec:
+        value:
+          # Example provider values only. Match to your cloud and worker flavor from sizing.
+          # Target flavor for this pool: 16.0 vCPU / 32.0 GiB
+          apiVersion: awsproviderconfig.openshift.io/v1beta1
+          kind: AWSMachineProviderConfig
+          instanceType: <set-instance-type>
+          blockDevices:
+            - ebs:
+                volumeSize: 500
+                volumeType: gp3
+                iops: 3000
+                throughput: 125
+

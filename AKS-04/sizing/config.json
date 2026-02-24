@@ -1,0 +1,43 @@
+{
+  "project": "AKS-04",
+  "profile": "medium",
+  "profile_description": "Production clusters (50-500GB/day)",
+  "platform": "openshift",
+  "sizing": {
+    "description": "Production clusters (50-500GB/day)",
+    "data_nodes": {
+      "count": 6,
+      "memory": "16Gi",
+      "cpu": "4",
+      "storage": "500Gi",
+      "storage_class": "premium"
+    },
+    "master_nodes": {
+      "count": 3,
+      "memory": "4Gi",
+      "cpu": "2"
+    },
+    "ingest_nodes": {
+      "count": 2,
+      "memory": "4Gi",
+      "cpu": "2"
+    },
+    "coordinating_nodes": {
+      "count": 2,
+      "memory": "4Gi",
+      "cpu": "2"
+    },
+    "kibana": {
+      "count": 2,
+      "memory": "2Gi",
+      "cpu": "1"
+    }
+  },
+  "generated_by": "project-initializer/sizing_integration",
+  "notes": [
+    "This is a baseline configuration - adjust based on actual workload",
+    "Use 'elasticsearch-openshift-sizing-assistant-legacy' skill for detailed sizing",
+    "Memory: Allocate 50% of node memory to JVM heap (max 31GB)",
+    "Storage: Plan for 2-3x data volume for replicas and overhead"
+  ]
+}

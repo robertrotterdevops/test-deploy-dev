@@ -1,0 +1,6 @@
+Component,Count,Memory (Gi),CPU (cores),Storage (Gi),Notes
+Data Nodes,6,16,4,500,Primary storage
+Master Nodes,3,4,2,10,Cluster coordination
+Ingest Nodes,2,4,2,10,Pipeline processing
+Coordinating Nodes,2,4,2,10,Query routing
+Kibana,2,2,1,1,UI and visualization

@@ -1,0 +1,37 @@
+# Resource Quota for AKS-04 namespace
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: AKS-04-quota
+  namespace: AKS-04
+  labels:
+    app.kubernetes.io/name: AKS-04
+spec:
+  hard:
+    requests.cpu: "20"
+    requests.memory: "64Gi"
+    limits.cpu: "40"
+    limits.memory: "128Gi"
+    persistentvolumeclaims: "20"
+    requests.storage: "2Ti"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: AKS-04-limits
+  namespace: AKS-04
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: "1"
+        memory: "2Gi"
+      defaultRequest:
+        cpu: "100m"
+        memory: "256Mi"
+      max:
+        cpu: "8"
+        memory: "32Gi"
+      min:
+        cpu: "50m"
+        memory: "64Mi"
